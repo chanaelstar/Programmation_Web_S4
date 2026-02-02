@@ -1,42 +1,33 @@
 <template>
-  <h1>Fossiles</h1>
-  <div id="fossil-container">
-  <div id="fossil-card">
-    <img
-      id="fossil-image"
-      src="https://dodo.ac/np/images/b/b0/Fossil_NH_Icon.png"
-      alt="Fossil"
-    />
-    <div id="fossil-description">
-      <h3>Fossile</h3>
-      <p className="fossil-description-line">Fossile non expertiser </p>
-      <p className="fossil-description-line">Non découvert</p>
-    </div>
-  </div>
 
-  <div id="fossil-card">
-    <img
-      id="fossil-image"
-      src="https://dodo.ac/np/images/8/8f/Brachio_Skull_NH_Icon.png"
-      alt="Fossil"
-    />
+    <div id="fossil-card">
+    <img :src="image" :alt="name" id="fossil-image" />
+
     <div id="fossil-description">
-      <h3>Crâne de brachiosaure</h3>
-      <p className="fossil-description-line">Brachiosaure </p>
-      <p className="fossil-description-line">Salle 2</p>
+      <h3>{{ name }}</h3>
+      
+      <p class="fossil-description-line">
+        <strong>Group :</strong> {{ fossil_group || 'None' }}
+      </p>
+      
+      <p class="fossil-description-line">
+        <strong>Price :</strong> {{ sell_price }} bells
+      </p>
     </div>
   </div>
-</div>
+ 
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  name: String,
+  image: String,
+  fossil_group: String,
+  sell_price: Number
+});
+</script>
 
 <style scoped>
-#fossil-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
 #fossil-card {
   width: 200px;
   height: 200px;
