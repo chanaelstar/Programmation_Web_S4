@@ -7,7 +7,7 @@ async function fetchFossilsGroup(){
     try {
         const response = await fetch('https://api.nookipedia.com/nh/fossils/groups', {
             headers : {
-                'X-API-KEY': 'ba84654c-2920-44b3-8643-174e5114a9bc',
+                'X-API-KEY': 'YOUR_API_KEY',
                 'Accept-Version': '1.0.0',
             }
         })
