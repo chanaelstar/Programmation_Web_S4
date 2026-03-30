@@ -26,5 +26,8 @@ import fossilData from './fossilData.js';
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  gap : 20px;
+  max-width: 1080px;
+  margin: 0 auto;
 }
 </style>

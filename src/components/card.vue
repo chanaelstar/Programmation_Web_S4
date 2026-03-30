@@ -36,7 +36,7 @@ defineProps({
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
-  margin: 10px;
+  /* margin: 10px; */
 }
 
 #fossil-image {
