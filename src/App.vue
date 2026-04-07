@@ -1,22 +1,31 @@
 <script setup>
-import FossilCard from './components/card.vue';
+import { ref, onMounted } from 'vue';
+import AppCard from './components/common/AppCard.vue';
 
-import { fetchFossils } from './services/api.js';
-fetchFossils();
+import { fetchAllFossils } from './services/api.js';
 
-import fossilData from './fossilData.js';
+// variable réactive pour stocker les données des fossiles
+const fossils = ref([]);
+
+// On utilise onMounted pour charger les données au démarrage de l'application
+onMounted(async () => {
+  const data = await fetchAllFossils();
+  if (data) {
+    fossils.value = data; // On remplit notre variable
+  }
+});
 </script>
 
 <template>
   <h1>List of Fossils</h1>
   <div id="fossil-container">
-  <FossilCard 
-      v-for="fossil in fossilData" 
-      :key="fossil.id"
-      :image="fossil.image_url"
-      :name="fossil.name"
-      :fossil_group="fossil.fossil_group"
-      :sell_price="fossil.sell_price"
+  <AppCard 
+      v-for="fossil in fossils" 
+        :key="fossil.name" 
+        :name="fossil.name"
+        :image_url="fossil.image_url"
+        :fossil_group="fossil.fossil_group"
+        :sell="fossil.sell" 
     />
   </div>
 </template>

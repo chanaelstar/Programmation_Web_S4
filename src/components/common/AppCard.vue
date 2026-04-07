@@ -1,17 +1,17 @@
 <template>
 
     <div id="fossil-card">
-    <img :src="image" :alt="name" id="fossil-image" />
+    <img :src="image_url" :alt="name" id="fossil-image" />
 
     <div id="fossil-description">
-      <h3>{{ name }}</h3>
+      <h2>{{ name }}</h2>
       
       <p class="fossil-description-line">
         <strong>Group :</strong> {{ fossil_group || 'None' }}
       </p>
       
       <p class="fossil-description-line">
-        <strong>Price :</strong> {{ sell_price }} bells
+        <strong>Price :</strong> {{ sell }} bells
       </p>
     </div>
   </div>
@@ -21,9 +21,9 @@
 <script setup>
 defineProps({
   name: String,
-  image: String,
+  image_url: String,
   fossil_group: String,
-  sell_price: Number
+  sell: Number
 });
 </script>
 
@@ -50,9 +50,10 @@ defineProps({
   color: #000000;
 }
 
-#fossil-description h3 {
+#fossil-description h2 {
   font-size: 18px;
   margin: 0;
+  text-transform: capitalize;
 }
 
 .fossil-description-line {
