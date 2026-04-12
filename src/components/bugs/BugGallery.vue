@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { fetchAllFossils } from '@/services/api.js'
+import { fetchAllBugs } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
 
-const fossils = ref([])
+const bugs = ref([])
 const loading = ref(true)
 const sortKey = ref('name-asc')
 const filterKey = ref('all')
@@ -13,19 +13,19 @@ const { isCollected } = useCollection()
 
 onMounted(async () => {
   try {
-    fossils.value = await fetchAllFossils()
+    bugs.value = await fetchAllBugs()
   } finally {
     loading.value = false
   }
 })
 
-const sortedFilteredFossils = computed(() => {
-  let list = [...fossils.value]
+const sortedFilteredBugs = computed(() => {
+  let list = [...bugs.value]
 
   if (filterKey.value === 'collected') {
-    list = list.filter(f => isCollected(f.name))
+    list = list.filter(b => isCollected(b.name))
   } else if (filterKey.value === 'not-collected') {
-    list = list.filter(f => !isCollected(f.name))
+    list = list.filter(b => !isCollected(b.name))
   }
 
   list.sort((a, b) => {
@@ -43,18 +43,18 @@ const sortedFilteredFossils = computed(() => {
 <template>
   <div>
     <div class="gallery-header">
-      <h2 class="gallery-title">🦕 Fossils</h2>
+      <h2 class="gallery-title">🦋 Bugs</h2>
       <div class="gallery-controls">
-        <label for="fossil-sort">Sort</label>
-        <select id="fossil-sort" v-model="sortKey">
+        <label for="bug-sort">Sort</label>
+        <select id="bug-sort" v-model="sortKey">
           <option value="name-asc">Name A → Z</option>
           <option value="name-desc">Name Z → A</option>
           <option value="price-asc">Price ↑</option>
           <option value="price-desc">Price ↓</option>
         </select>
 
-        <label for="fossil-filter">Filter</label>
-        <select id="fossil-filter" v-model="filterKey">
+        <label for="bug-filter">Filter</label>
+        <select id="bug-filter" v-model="filterKey">
           <option value="all">All</option>
           <option value="collected">Collected</option>
           <option value="not-collected">Not collected</option>
@@ -68,16 +68,16 @@ const sortedFilteredFossils = computed(() => {
 
     <TransitionGroup v-else name="card" tag="div" class="gallery-grid">
       <AppCard
-        v-for="fossil in sortedFilteredFossils"
-        :key="fossil.name"
-        :name="fossil.name"
-        :image_url="fossil.image_url"
-        :fossil_group="fossil.fossil_group"
+        v-for="bug in sortedFilteredBugs"
+        :key="bug.name"
+        :name="bug.name"
+        :image_url="bug.image_url"
+        :rarity="bug.rarity"
       />
     </TransitionGroup>
 
-    <p v-if="!loading && sortedFilteredFossils.length === 0" class="empty-state">
-      No fossils match this filter.
+    <p v-if="!loading && sortedFilteredBugs.length === 0" class="empty-state">
+      No bugs match this filter.
     </p>
   </div>
 </template>
