@@ -3,14 +3,18 @@ import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { fetchAllFossils, fetchAllArtworks, fetchAllBugs, fetchAllFish } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
+import fossilImg from '@/assets/images/plaque-fossil.png'
+import artworkImg from '@/assets/images/plaque-artwork.png'
+import bugsImg from '@/assets/images/plaque-bug.png'
+import fishImg from '@/assets/images/plaque-fish.png'
 
 const { collected } = useCollection()
 
 const categories = ref([
-  { label: 'Fossils', path: '/fossils', icon: '🦕', count: null },
-  { label: 'Artworks', path: '/artworks', icon: '🖼️', count: null },
-  { label: 'Bugs', path: '/bugs', icon: '🦋', count: null },
-  { label: 'Fish', path: '/fish', icon: '🐟', count: null },
+  { label: 'Fossils', path: '/fossils', image: fossilImg, count: null },
+  { label: 'Artworks', path: '/artworks', image: artworkImg, count: null },
+  { label: 'Bugs', path: '/bugs', image: bugsImg, count: null },
+  { label: 'Fish', path: '/fish', image: fishImg, count: null },
 ])
 
 const collectedCount = computed(() => collected.value.size)
@@ -49,7 +53,7 @@ onMounted(async () => {
         :to="cat.path"
         class="category-card"
       >
-        <span class="category-icon">{{ cat.icon }}</span>
+        <img :src="cat.image" :alt="cat.label" class="category-img" />
         <span class="category-label">{{ cat.label }}</span>
         <span class="category-count">
           {{ cat.count !== null ? cat.count + ' items' : '…' }}
@@ -129,6 +133,12 @@ onMounted(async () => {
 
 .category-icon {
   font-size: 2.5rem;
+}
+
+.category-img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
 
 .category-label {
