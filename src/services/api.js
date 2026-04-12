@@ -76,6 +76,28 @@ export async function fetchAllBugs(){
         return [];
 }
 }
+// Single bug : information about a specific bug 
+export async function fetchSingleBug(bug){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/bugs/${encodeURIComponent(bug)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            console.log("Recovered single bug:", data)
+            return data
+        }else {           
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single bug:', error)
+        return [];
+    }
+}
 
 // List of fish
 export async function fetchAllFish(){
@@ -99,3 +121,25 @@ export async function fetchAllFish(){
         return [];
 }
 }   
+// Single fish : information about a specific fish
+export async function fetchSingleFish(fish){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/fish/${encodeURIComponent(fish)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            console.log("Recovered single fish:", data)
+            return data
+        }else {           
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single fish:', error)
+        return [];
+    }
+}

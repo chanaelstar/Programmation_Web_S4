@@ -1,8 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { fetchAllFish } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+
+const router = useRouter()
+
+function goToDetail(name) {
+  router.push(`/fish/${name}`)
+}
 
 const fish = ref([])
 const loading = ref(true)
@@ -67,13 +74,17 @@ const sortedFilteredFish = computed(() => {
     </div>
 
     <TransitionGroup v-else name="card" tag="div" class="gallery-grid">
-      <AppCard
+      <div
         v-for="fish in sortedFilteredFish"
         :key="fish.name"
-        :name="fish.name"
-        :image_url="fish.image_url"
-        :rarity="fish.rarity"
-      />
+        class="card-link"
+        @click="goToDetail(fish.name)"
+      >
+        <AppCard
+          :name="fish.name"
+          :image_url="fish.image_url"
+        />
+      </div>
     </TransitionGroup>
 
     <p v-if="!loading && sortedFilteredFish.length === 0" class="empty-state">
@@ -88,5 +99,10 @@ const sortedFilteredFish = computed(() => {
   color: #81c784;
   margin-top: 2rem;
   font-size: 1rem;
+}
+
+.card-link {
+  display: block;
+  cursor: pointer;
 }
 </style>

@@ -1,8 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { fetchAllBugs } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+
+const router = useRouter()
+
+function goToDetail(name) {
+  router.push(`/bugs/${name}`)
+}
 
 const bugs = ref([])
 const loading = ref(true)
@@ -67,13 +74,18 @@ const sortedFilteredBugs = computed(() => {
     </div>
 
     <TransitionGroup v-else name="card" tag="div" class="gallery-grid">
-      <AppCard
+      <div
         v-for="bug in sortedFilteredBugs"
         :key="bug.name"
-        :name="bug.name"
-        :image_url="bug.image_url"
-        :rarity="bug.rarity"
-      />
+        class="card-link"
+        @click="goToDetail(bug.name)"
+      >
+        <AppCard
+          :name="bug.name"
+          :image_url="bug.image_url"
+          :rarity="bug.rarity"
+        />
+      </div>
     </TransitionGroup>
 
     <p v-if="!loading && sortedFilteredBugs.length === 0" class="empty-state">
@@ -88,5 +100,10 @@ const sortedFilteredBugs = computed(() => {
   color: #81c784;
   margin-top: 2rem;
   font-size: 1rem;
+}
+
+.card-link {
+  display: block;
+  cursor: pointer;
 }
 </style>
