@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchSingleFossil, fetchSingleFossilIndividual } from '@/services/api.js'
 import FossilDetail from '@/components/fossils/FossilDetail.vue'
@@ -10,30 +10,38 @@ const group = ref(null)
 const loading = ref(true)
 const error = ref(false)
 
-onMounted(async () => {
-  try {
-    const data = await fetchSingleFossil(route.params.name)
-    const groupData = Array.isArray(data) ? data[0] : data
+// Se déclenche au montage (immediate) ET à chaque changement de fossile dans l'URL
+watch(
+  () => route.params.name,
+  async (name) => {
+    loading.value = true
+    error.value = false
+    fossil.value = null
+    group.value = null
 
-    if (groupData && groupData.fossils) {
-      // Fossil avec groupe
-      group.value = groupData
-      const matchedName = groupData.matched?.name
-      const found = groupData.fossils.find(f => f.name === matchedName)
-        || groupData.fossils.find(f => f.name.toLowerCase() === route.params.name.toLowerCase())
-        || groupData.fossils[0]
-      fossil.value = found
-    } else {
-      // Fossil standalone (ex: amber) — fallback sur l'endpoint individuals
-      const individual = await fetchSingleFossilIndividual(route.params.name)
-      if (!individual) { error.value = true; return }
-      fossil.value = individual
-      group.value = null
+    try {
+      const data = await fetchSingleFossil(name)
+      const groupData = Array.isArray(data) ? data[0] : data
+
+      if (groupData && groupData.fossils) {
+        group.value = groupData
+        const matchedName = groupData.matched?.name
+        const found = groupData.fossils.find(f => f.name === matchedName)
+          || groupData.fossils.find(f => f.name.toLowerCase() === name.toLowerCase())
+          || groupData.fossils[0]
+        fossil.value = found
+      } else {
+        const individual = await fetchSingleFossilIndividual(name)
+        if (!individual) { error.value = true; return }
+        fossil.value = individual
+        group.value = null
+      }
+    } finally {
+      loading.value = false
     }
-  } finally {
-    loading.value = false
-  }
-})
+  },
+  { immediate: true }
+)
 </script>
 
 <template>

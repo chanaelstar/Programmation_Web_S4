@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchAllFish, fetchAllSeaCreatures } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
@@ -14,11 +14,15 @@ function goToDetail(name) {
 const fish = ref([])
 const seaCreatures = ref([])
 const loading = ref(true)
-const sortKey = ref('name-asc')
-const filterKey = ref('all')
-const activeTab = ref('fish')
+const sortKey = ref(localStorage.getItem('fish-sort') || 'name-asc')
+const filterKey = ref(localStorage.getItem('fish-filter') || 'all')
+const activeTab = ref(localStorage.getItem('fish-tab') || 'fish')
 
 const { isCollected } = useCollection()
+
+watch(sortKey, (val) => localStorage.setItem('fish-sort', val))
+watch(filterKey, (val) => localStorage.setItem('fish-filter', val))
+watch(activeTab, (val) => localStorage.setItem('fish-tab', val))
 
 onMounted(async () => {
   try {

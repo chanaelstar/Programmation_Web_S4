@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchAllBugs } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
@@ -13,10 +13,13 @@ function goToDetail(name) {
 
 const bugs = ref([])
 const loading = ref(true)
-const sortKey = ref('name-asc')
-const filterKey = ref('all')
+const sortKey = ref(localStorage.getItem('bug-sort') || 'name-asc')
+const filterKey = ref(localStorage.getItem('bug-filter') || 'all')
 
 const { isCollected } = useCollection()
+
+watch(sortKey, (val) => localStorage.setItem('bug-sort', val))
+watch(filterKey, (val) => localStorage.setItem('bug-filter', val))
 
 onMounted(async () => {
   try {

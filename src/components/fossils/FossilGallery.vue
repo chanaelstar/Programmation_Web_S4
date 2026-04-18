@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { fetchAllFossils } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
@@ -13,8 +13,12 @@ function goToDetail(name) {
 
 const fossils = ref([])
 const loading = ref(true)
-const sortKey = ref('name-asc')
-const filterKey = ref('all')
+const sortKey = ref(localStorage.getItem('fossil-sort') || 'name-asc')
+const filterKey = ref(localStorage.getItem('fossil-filter') || 'all')
+
+// Mémorise les préférences de tri/filtre entre les visites
+watch(sortKey, (val) => localStorage.setItem('fossil-sort', val))
+watch(filterKey, (val) => localStorage.setItem('fossil-filter', val))
 
 const { isCollected, isGroupComplete } = useCollection()
 

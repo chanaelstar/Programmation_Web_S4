@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchSingleFish } from '@/services/api.js'
 import FishDetail from '@/components/fish/FishDetail.vue'
@@ -9,19 +9,26 @@ const fish = ref(null)
 const loading = ref(true)
 const error = ref(false)
 
-onMounted(async () => {
-  try {
-    const data = await fetchSingleFish(route.params.name)
-    const item = Array.isArray(data) ? data[0] : data
-    if (item && item.name) {
-      fish.value = item
-    } else {
-      error.value = true
+watch(
+  () => route.params.name,
+  async (name) => {
+    loading.value = true
+    error.value = false
+    fish.value = null
+    try {
+      const data = await fetchSingleFish(name)
+      const item = Array.isArray(data) ? data[0] : data
+      if (item && item.name) {
+        fish.value = item
+      } else {
+        error.value = true
+      }
+    } finally {
+      loading.value = false
     }
-  } finally {
-    loading.value = false
-  }
-})
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
