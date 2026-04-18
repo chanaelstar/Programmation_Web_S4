@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
-import { fetchAllFossils, fetchAllArtworks, fetchAllBugs, fetchAllFish } from '@/services/api.js'
+import { fetchAllFossils, fetchAllArtworks, fetchAllBugs, fetchAllFish, fetchAllSeaCreatures } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import fossilImg from '@/assets/images/plaque-fossil.png'
 import artworkImg from '@/assets/images/plaque-artwork.png'
@@ -20,16 +20,17 @@ const categories = ref([
 const collectedCount = computed(() => collected.value.size)
 
 onMounted(async () => {
-  const [fossils, artworks, bugs, fish] = await Promise.all([
+  const [fossils, artworks, bugs, fish, sea] = await Promise.all([
     fetchAllFossils(),
     fetchAllArtworks(),
     fetchAllBugs(),
     fetchAllFish(),
+    fetchAllSeaCreatures(),
   ])
   categories.value[0].count = fossils.length
   categories.value[1].count = artworks.length
   categories.value[2].count = bugs.length
-  categories.value[3].count = fish.length
+  categories.value[3].count = fish.length + sea.length
 })
 </script>
 

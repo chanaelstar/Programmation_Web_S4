@@ -143,3 +143,26 @@ export async function fetchSingleFish(fish){
         return [];
     }
 }
+
+// List of sea creatures
+export async function fetchAllSeaCreatures(){
+    try {
+        const response = await fetch('https://api.nookipedia.com/nh/sea', {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            console.log("Recovered sea creatures:", data)
+            return data
+        }else {           
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching sea creatures:', error)
+        return [];
+}
+}
