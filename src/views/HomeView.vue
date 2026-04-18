@@ -1,6 +1,7 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch, nextTick } from 'vue'
 import { RouterLink } from 'vue-router'
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend } from 'chart.js'
 import { fetchAllFossils, fetchAllArtworks, fetchAllBugs, fetchAllFish, fetchAllSeaCreatures } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import fossilImg from '@/assets/images/plaque-fossil.png'
@@ -8,16 +9,61 @@ import artworkImg from '@/assets/images/plaque-artwork.png'
 import bugsImg from '@/assets/images/plaque-bug.png'
 import fishImg from '@/assets/images/plaque-fish.png'
 
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip, Legend)
+
 const { collected } = useCollection()
 
 const categories = ref([
-  { label: 'Fossils', path: '/fossils', image: fossilImg, count: null },
-  { label: 'Artworks', path: '/artworks', image: artworkImg, count: null },
-  { label: 'Bugs', path: '/bugs', image: bugsImg, count: null },
-  { label: 'Fish', path: '/fish', image: fishImg, count: null },
+  { label: 'Fossils', path: '/fossils', image: fossilImg, count: null, names: [] },
+  { label: 'Artworks', path: '/artworks', image: artworkImg, count: null, names: [] },
+  { label: 'Bugs', path: '/bugs', image: bugsImg, count: null, names: [] },
+  { label: 'Fish', path: '/fish', image: fishImg, count: null, names: [] },
 ])
 
 const collectedCount = computed(() => collected.value.size)
+
+const chartCanvas = ref(null)
+let chartInstance = null
+
+function buildChart() {
+  if (!chartCanvas.value) return
+  const labels = categories.value.map(c => c.label)
+  const totals = categories.value.map(c => c.count ?? 0)
+  const collecteds = categories.value.map(c =>
+    c.names.filter(n => collected.value.has(n)).length
+  )
+
+  if (chartInstance) chartInstance.destroy()
+  chartInstance = new Chart(chartCanvas.value, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Collected',
+          data: collecteds,
+          backgroundColor: '#4caf50',
+          borderRadius: 6,
+        },
+        {
+          label: 'Remaining',
+          data: totals.map((t, i) => t - collecteds[i]),
+          backgroundColor: '#c8e6c9',
+          borderRadius: 6,
+        },
+      ],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { position: 'bottom' } },
+      scales: {
+        x: { stacked: true, grid: { display: false } },
+        y: { stacked: true, grid: { display: false } },
+      },
+    },
+  })
+}
 
 onMounted(async () => {
   const [fossils, artworks, bugs, fish, sea] = await Promise.all([
@@ -28,10 +74,19 @@ onMounted(async () => {
     fetchAllSeaCreatures(),
   ])
   categories.value[0].count = fossils.length
+  categories.value[0].names = fossils.map(f => f.name)
   categories.value[1].count = artworks.length
+  categories.value[1].names = artworks.map(a => a.name)
   categories.value[2].count = bugs.length
+  categories.value[2].names = bugs.map(b => b.name)
   categories.value[3].count = fish.length + sea.length
+  categories.value[3].names = [...fish, ...sea].map(f => f.name)
+  await nextTick()
+  buildChart()
 })
+
+// Mise à jour du graphique quand la collection change
+watch(collected, buildChart)
 </script>
 
 <template>
@@ -60,6 +115,13 @@ onMounted(async () => {
           {{ cat.count !== null ? cat.count + ' items' : '…' }}
         </span>
       </RouterLink>
+    </section>
+
+    <section class="progress-section">
+      <h2 class="progress-title">Museum Progress</h2>
+      <div class="chart-wrapper">
+        <canvas ref="chartCanvas"></canvas>
+      </div>
     </section>
   </div>
 </template>
@@ -153,5 +215,25 @@ onMounted(async () => {
   font-size: 0.85rem;
   color: #81c784;
   font-weight: 600;
+}
+
+.progress-section {
+  background: #fff9e6;
+  border: 2px solid #c8e6c9;
+  border-radius: 1.5rem;
+  padding: 1.75rem 2rem;
+}
+
+.progress-title {
+  font-family: 'qlarendon', serif;
+  font-size: 1.4rem;
+  color: #2e7d32;
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+
+.chart-wrapper {
+  max-width: 560px;
+  margin: 0 auto;
 }
 </style>

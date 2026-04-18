@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { fetchAllFossils } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+import GalleryControls from '@/components/common/GalleryControls.vue'
 
 const router = useRouter()
 
@@ -15,6 +16,7 @@ const fossils = ref([])
 const loading = ref(true)
 const sortKey = ref(localStorage.getItem('fossil-sort') || 'name-asc')
 const filterKey = ref(localStorage.getItem('fossil-filter') || 'all')
+const searchQuery = ref('')
 
 // Mémorise les préférences de tri/filtre entre les visites
 watch(sortKey, (val) => localStorage.setItem('fossil-sort', val))
@@ -48,6 +50,11 @@ onMounted(async () => {
 const sortedFilteredFossils = computed(() => {
   let list = [...fossils.value]
 
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    list = list.filter(f => f.name.toLowerCase().includes(q))
+  }
+
   if (filterKey.value === 'collected') {
     list = list.filter(f => isCollected(f.name))
   } else if (filterKey.value === 'not-collected') {
@@ -70,22 +77,17 @@ const sortedFilteredFossils = computed(() => {
   <div>
     <div class="gallery-header">
       <h2 class="gallery-title">🦕 Fossils</h2>
-      <div class="gallery-controls">
-        <label for="fossil-sort">Sort</label>
-        <select id="fossil-sort" v-model="sortKey">
-          <option value="name-asc">Name A → Z</option>
-          <option value="name-desc">Name Z → A</option>
-          <option value="price-asc">Price ↑</option>
-          <option value="price-desc">Price ↓</option>
-        </select>
-
-        <label for="fossil-filter">Filter</label>
-        <select id="fossil-filter" v-model="filterKey">
-          <option value="all">All</option>
-          <option value="collected">Collected</option>
-          <option value="not-collected">Not collected</option>
-        </select>
-      </div>
+      <GalleryControls
+        sort-id="fossil-sort"
+        filter-id="fossil-filter"
+        search-placeholder="Search fossils…"
+        :sort-key="sortKey"
+        :filter-key="filterKey"
+        :search-query="searchQuery"
+        @update:sort-key="sortKey = $event"
+        @update:filter-key="filterKey = $event"
+        @update:search-query="searchQuery = $event"
+      />
     </div>
 
     <div v-if="loading" class="loading-state">

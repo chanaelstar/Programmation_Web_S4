@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { fetchAllArtworks } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+import GalleryControls from '@/components/common/GalleryControls.vue'
 
 const router = useRouter()
 
@@ -15,6 +16,7 @@ const artworks = ref([])
 const loading = ref(true)
 const sortKey = ref(localStorage.getItem('artwork-sort') || 'name-asc')
 const filterKey = ref(localStorage.getItem('artwork-filter') || 'all')
+const searchQuery = ref('')
 
 const { isCollected } = useCollection()
 
@@ -31,6 +33,11 @@ onMounted(async () => {
 
 const sortedFilteredArtworks = computed(() => {
   let list = [...artworks.value]
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    list = list.filter(a => a.name.toLowerCase().includes(q))
+  }
 
   if (filterKey.value === 'collected') {
     list = list.filter(a => isCollected(a.name))
@@ -54,22 +61,17 @@ const sortedFilteredArtworks = computed(() => {
   <div>
     <div class="gallery-header">
       <h2 class="gallery-title">🖼️ Artworks</h2>
-      <div class="gallery-controls">
-        <label for="art-sort">Sort</label>
-        <select id="art-sort" v-model="sortKey">
-          <option value="name-asc">Name A → Z</option>
-          <option value="name-desc">Name Z → A</option>
-          <option value="price-asc">Price ↑</option>
-          <option value="price-desc">Price ↓</option>
-        </select>
-
-        <label for="art-filter">Filter</label>
-        <select id="art-filter" v-model="filterKey">
-          <option value="all">All</option>
-          <option value="collected">Collected</option>
-          <option value="not-collected">Not collected</option>
-        </select>
-      </div>
+      <GalleryControls
+        sort-id="art-sort"
+        filter-id="art-filter"
+        search-placeholder="Search artworks…"
+        :sort-key="sortKey"
+        :filter-key="filterKey"
+        :search-query="searchQuery"
+        @update:sort-key="sortKey = $event"
+        @update:filter-key="filterKey = $event"
+        @update:search-query="searchQuery = $event"
+      />
     </div>
 
     <div v-if="loading" class="loading-state">

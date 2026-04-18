@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { fetchAllFish, fetchAllSeaCreatures } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+import GalleryControls from '@/components/common/GalleryControls.vue'
 
 const router = useRouter()
 
@@ -17,6 +18,7 @@ const loading = ref(true)
 const sortKey = ref(localStorage.getItem('fish-sort') || 'name-asc')
 const filterKey = ref(localStorage.getItem('fish-filter') || 'all')
 const activeTab = ref(localStorage.getItem('fish-tab') || 'fish')
+const searchQuery = ref('')
 
 const { isCollected } = useCollection()
 
@@ -39,6 +41,11 @@ onMounted(async () => {
 
 const sortedFilteredItems = computed(() => {
   let list = activeTab.value === 'fish' ? [...fish.value] : [...seaCreatures.value]
+
+  if (searchQuery.value) {
+    const q = searchQuery.value.toLowerCase()
+    list = list.filter(f => f.name.toLowerCase().includes(q))
+  }
 
   if (filterKey.value === 'collected') {
     list = list.filter(f => isCollected(f.name))
@@ -76,22 +83,17 @@ const sortedFilteredItems = computed(() => {
           >Sea Creatures</button>
         </div>
       </div>
-      <div class="gallery-controls">
-        <label for="fish-sort">Sort</label>
-        <select id="fish-sort" v-model="sortKey">
-          <option value="name-asc">Name A → Z</option>
-          <option value="name-desc">Name Z → A</option>
-          <option value="price-asc">Price ↑</option>
-          <option value="price-desc">Price ↓</option>
-        </select>
-
-        <label for="fish-filter">Filter</label>
-        <select id="fish-filter" v-model="filterKey">
-          <option value="all">All</option>
-          <option value="collected">Collected</option>
-          <option value="not-collected">Not collected</option>
-        </select>
-      </div>
+      <GalleryControls
+        sort-id="fish-sort"
+        filter-id="fish-filter"
+        :search-placeholder="activeTab === 'fish' ? 'Search fish…' : 'Search sea creatures…'"
+        :sort-key="sortKey"
+        :filter-key="filterKey"
+        :search-query="searchQuery"
+        @update:sort-key="sortKey = $event"
+        @update:filter-key="filterKey = $event"
+        @update:search-query="searchQuery = $event"
+      />
     </div>
 
     <div v-if="loading" class="loading-state">

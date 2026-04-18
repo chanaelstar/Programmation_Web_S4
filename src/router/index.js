@@ -9,6 +9,7 @@ import BugDetailView from '@/views/BugDetailView.vue'
 import FishGallery from '@/components/fish/FishGallery.vue'
 import FishDetailView from '@/views/FishDetailView.vue'
 import SeaCreatureDetailView from '@/views/SeaCreatureDetailView.vue'
+import NotFoundView from '@/views/NotFoundView.vue'
 
 const routes = [
   { path: '/', component: HomeView },
@@ -21,6 +22,7 @@ const routes = [
   { path: '/fish', component: FishGallery },
   { path: '/fish/:name', component: FishDetailView },
   { path: '/sea/:name', component: SeaCreatureDetailView },
+  { path: '/:pathMatch(.*)*', component: NotFoundView },
 ]
 
 export default createRouter({
