@@ -76,7 +76,7 @@ const sortedFilteredFossils = computed(() => {
 <template>
   <div>
     <div class="gallery-header">
-      <h2 class="gallery-title">🦕 Fossils</h2>
+      <h2 class="gallery-title">🦴 Fossils</h2>
       <GalleryControls
         sort-id="fossil-sort"
         filter-id="fossil-filter"
