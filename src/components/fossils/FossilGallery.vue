@@ -16,7 +16,22 @@ const loading = ref(true)
 const sortKey = ref('name-asc')
 const filterKey = ref('all')
 
-const { isCollected } = useCollection()
+const { isCollected, isGroupComplete } = useCollection()
+
+// Map groupName -> [fossilNames] pour détecter les groupes complets
+const completedGroups = computed(() => {
+  const groupMap = {}
+  for (const f of fossils.value) {
+    if (!f.fossil_group) continue
+    if (!groupMap[f.fossil_group]) groupMap[f.fossil_group] = []
+    groupMap[f.fossil_group].push(f.name)
+  }
+  const result = new Set()
+  for (const [group, names] of Object.entries(groupMap)) {
+    if (isGroupComplete(names)) result.add(group)
+  }
+  return result
+})
 
 onMounted(async () => {
   try {
@@ -84,6 +99,7 @@ const sortedFilteredFossils = computed(() => {
           :name="fossil.name"
           :image_url="fossil.image_url"
           :fossil_group="fossil.fossil_group"
+          :group_complete="fossil.fossil_group ? completedGroups.has(fossil.fossil_group) : false"
         />
       </div>
     </TransitionGroup>

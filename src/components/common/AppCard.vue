@@ -8,6 +8,8 @@ const props = defineProps({
   sell: Number,
   // Fossil-specific
   fossil_group: String,
+  // Fossil-specific completion
+  group_complete: Boolean,
   // Artwork-specific
   art_name: String,
   art_type: String,
@@ -27,6 +29,7 @@ const collected = computed(() => isCollected(props.name))
     <div class="app-card-image-wrapper">
       <img :src="image_url" :alt="name" class="app-card-image" />
       <span v-if="collected" class="collected-overlay">✓</span>
+      <span v-if="group_complete" class="complete-overlay">⭐</span>
     </div>
 
     <div class="app-card-body">
@@ -101,6 +104,15 @@ const collected = computed(() => isCollected(props.name))
   justify-content: center;
   font-size: 0.75rem;
   font-weight: 700;
+}
+
+.complete-overlay {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 1rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2));
 }
 
 .app-card-body {

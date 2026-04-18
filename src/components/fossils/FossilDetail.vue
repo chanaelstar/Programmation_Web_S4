@@ -9,10 +9,12 @@ const props = defineProps({
   error: Boolean,
 })
 
-const { isCollected, toggleCollected } = useCollection()
+const { isCollected, toggleCollected, isGroupComplete } = useCollection()
 
 const otherFossils = () =>
   props.group?.fossils?.filter(f => f.name !== props.fossil?.name) ?? []
+
+const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 </script>
 
 <template>
@@ -35,6 +37,9 @@ const otherFossils = () =>
         <div class="detail-info">
           <p v-if="group" class="group-label">{{ group.name }}</p>
           <h1 class="detail-name">{{ fossil.name }}</h1>
+          <div v-if="group && isGroupComplete(groupFossilNames())" class="complete-badge">
+            ⭐ Squelette Complet
+          </div>
 
           <div class="detail-grid">
             <div v-if="fossil.sell" class="detail-item">
@@ -141,6 +146,19 @@ const otherFossils = () =>
   flex-direction: column;
   gap: 1rem;
   flex: 1;
+}
+
+.complete-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: linear-gradient(135deg, #fff9c4, #ffe082);
+  border: 2px solid #f9a825;
+  color: #e65100;
+  border-radius: 2rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .group-label {

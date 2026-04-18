@@ -19,6 +19,12 @@ function toggleCollected(name) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify([...updated]))
 }
 
+// names = tableau de noms de fossiles du même groupe
+function isGroupComplete(names) {
+  if (!names || names.length === 0) return false
+  return names.every(name => collected.value.has(name))
+}
+
 export function useCollection() {
-  return { collected, isCollected, toggleCollected }
+  return { collected, isCollected, toggleCollected, isGroupComplete }
 }
