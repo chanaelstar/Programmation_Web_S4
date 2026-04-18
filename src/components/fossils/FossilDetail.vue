@@ -64,6 +64,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 
       <!-- Description du groupe -->
       <div v-if="group?.description" class="group-description">
+        <h2 class="group-description-title">📖 Description</h2>
         <p>{{ group.description }}</p>
       </div>
 
@@ -91,25 +92,25 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #4caf50;
+  color: #89E2AE;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.95rem;
   transition: color 0.15s;
 }
 
-.back-link:hover { color: #2e7d32; }
+.back-link:hover { color: #6b4428; }
 
 .error-state {
   text-align: center;
-  color: #81c784;
+  color: #9ecfb8;
   margin-top: 2rem;
 }
 
 .detail-card {
-  background: #fff9e6;
+  background: #faf6ee;
   border-radius: 1.5rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
@@ -127,7 +128,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
   flex-shrink: 0;
   width: 220px;
   height: 220px;
-  background: #e8f5e9;
+  background: #e4f2ec;
   border-radius: 1.25rem;
   display: flex;
   align-items: center;
@@ -164,16 +165,16 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 .group-label {
   font-size: 0.8rem;
   font-weight: 700;
-  color: #81c784;
+  color: #9ecfb8;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   margin: 0;
 }
 
 .detail-name {
-  font-family: 'qlarendon', serif;
+  font-family: 'Manrope', sans-serif;
   font-size: 2rem;
-  color: #2e7d32;
+  color: #6b4428;
   text-transform: capitalize;
   margin: 0;
 }
@@ -185,7 +186,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 }
 
 .detail-item {
-  background: #f1f8e9;
+  background: #eaf4ef;
   border-radius: 0.75rem;
   padding: 0.6rem 0.9rem;
   display: flex;
@@ -196,7 +197,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 .detail-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #81c784;
+  color: #9ecfb8;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -204,12 +205,12 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 .detail-value {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2e7d32;
+  color: #6b4428;
 }
 
 .catchphrase {
   font-style: italic;
-  color: #81c784;
+  color: #9ecfb8;
   font-size: 0.9rem;
   margin: 0;
 }
@@ -218,9 +219,9 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
   align-self: flex-start;
   padding: 0.6rem 1.5rem;
   border-radius: 2rem;
-  border: 2px solid #4caf50;
+  border: 2px solid #89E2AE;
   background: transparent;
-  color: #2e7d32;
+  color: #6b4428;
   font-family: 'Manrope', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
@@ -230,14 +231,21 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 }
 
 .collect-btn:hover,
-.collect-btn.collected { background-color: #4caf50; color: #fff; }
+.collect-btn.collected { background-color: #89E2AE; color: #fff; }
 
 /* Description */
+.group-description-title {
+  font-family: 'qlarendon', serif;
+  font-size: 1rem;
+  color: #6b4428;
+  margin: 0 0 0.75rem;
+}
+
 .group-description {
-  border-top: 1px solid #c8e6c9;
+  border-top: 1px solid #c0e0d0;
   padding-top: 1.25rem;
   font-size: 0.9rem;
-  color: #558b2f;
+  color: #7a5434;
   line-height: 1.6;
 }
 
@@ -245,14 +253,14 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 
 /* Autres fossiles du groupe */
 .group-section {
-  border-top: 1px solid #c8e6c9;
+  border-top: 1px solid #c0e0d0;
   padding-top: 1.25rem;
 }
 
 .group-section-title {
   font-family: 'qlarendon', serif;
   font-size: 1rem;
-  color: #2e7d32;
+  color: #6b4428;
   margin: 0 0 1rem;
 }
 
@@ -268,7 +276,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
-  background: #f1f8e9;
+  background: #eaf4ef;
   border-radius: 0.75rem;
   padding: 0.6rem;
   width: 100px;
@@ -277,8 +285,8 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 }
 
 .group-fossil-item.is-collected {
-  border-color: #4caf50;
-  background: #e8f5e9;
+  border-color: #89E2AE;
+  background: #e4f2ec;
 }
 
 .group-fossil-img {
@@ -290,7 +298,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 .group-fossil-name {
   font-size: 0.7rem;
   font-weight: 600;
-  color: #2e7d32;
+  color: #6b4428;
   text-align: center;
   text-transform: capitalize;
 }
@@ -299,7 +307,7 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
   position: absolute;
   top: 4px;
   right: 6px;
-  background: #4caf50;
+  background: #89E2AE;
   color: #fff;
   border-radius: 50%;
   width: 16px;
@@ -312,8 +320,10 @@ const groupFossilNames = () => props.group?.fossils?.map(f => f.name) ?? []
 }
 
 @media (max-width: 600px) {
-  .detail-top { flex-direction: column; }
+  .detail-card { padding: 1.25rem; gap: 1.25rem; }
+  .detail-top { flex-direction: column; gap: 1.25rem; }
   .detail-image-wrapper { width: 100%; height: 200px; }
+  .detail-name { font-size: 1.5rem; }
   .detail-grid { grid-template-columns: 1fr; }
 }
 </style>

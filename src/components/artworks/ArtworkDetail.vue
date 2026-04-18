@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useCollection } from '@/composables/useCollection.js'
 
@@ -9,6 +10,25 @@ const props = defineProps({
 })
 
 const { isCollected, toggleCollected } = useCollection()
+
+const lightboxOpen = ref(false)
+const lightboxIndex = ref(0)
+
+function openLightbox(index) {
+  lightboxIndex.value = index
+  lightboxOpen.value = true
+}
+
+function closeLightbox() {
+  lightboxOpen.value = false
+}
+
+function lightboxImages() {
+  const imgs = []
+  if (props.artwork?.texture_url) imgs.push({ src: props.artwork.texture_url, label: 'Original' })
+  if (props.artwork?.fake_texture_url) imgs.push({ src: props.artwork.fake_texture_url, label: 'Forgery' })
+  return imgs
+}
 </script>
 
 <template>
@@ -75,34 +95,66 @@ const { isCollected, toggleCollected } = useCollection()
         </div>
       </div>
 
-      <!-- Description réelle -->
+      <hr class="section-divider" />
+      <!-- Description -->
       <div v-if="artwork.description" class="info-block genuine">
-        <h2 class="info-title">✅ Genuine</h2>
+        <h2 class="info-title">✅ Original</h2>
         <div class="info-body">
           <img
             v-if="artwork.texture_url"
             :src="artwork.texture_url"
             alt="Real texture"
-            class="info-texture"
+            class="info-texture clickable"
+            @click="openLightbox(0)"
+            title="Click to enlarge"
           />
           <p class="info-description">{{ artwork.description }}</p>
         </div>
       </div>
 
-      <!-- Comment repérer le faux -->
+      <!-- Comment repérer le faux ? -->
       <div v-if="artwork.has_fake && artwork.authenticity" class="info-block forgery">
-        <h2 class="info-title">⚠️ How to spot the forgery</h2>
+        <h2 class="info-title">❌ Fake </h2>
         <div class="info-body">
           <img
             v-if="artwork.fake_texture_url"
             :src="artwork.fake_texture_url"
             alt="Fake texture"
-            class="info-texture"
+            class="info-texture clickable"
+            @click="openLightbox(1)"
+            title="Click to enlarge"
           />
           <p class="info-description">{{ artwork.authenticity }}</p>
         </div>
       </div>
     </div>
+
+    <Transition name="lightbox">
+      <div v-if="lightboxOpen" class="lightbox-overlay" @click.self="closeLightbox">
+        <div class="lightbox-box">
+          <button class="lightbox-close" @click="closeLightbox">✕</button>
+
+          <div class="lightbox-tabs">
+            <button
+              v-for="(img, i) in lightboxImages()"
+              :key="i"
+              class="lightbox-tab"
+              :class="{ active: lightboxIndex === i }"
+              @click="lightboxIndex = i"
+            >{{ img.label }}</button>
+          </div>
+
+          <Transition name="slide" mode="out-in">
+            <img
+              :key="lightboxIndex"
+              :src="lightboxImages()[lightboxIndex]?.src"
+              :alt="lightboxImages()[lightboxIndex]?.label"
+              class="lightbox-img"
+            />
+          </Transition>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -110,25 +162,25 @@ const { isCollected, toggleCollected } = useCollection()
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #4caf50;
+  color: #89E2AE;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.95rem;
   transition: color 0.15s;
 }
 
-.back-link:hover { color: #2e7d32; }
+.back-link:hover { color: #6b4428; }
 
 .error-state {
   text-align: center;
-  color: #81c784;
+  color: #9ecfb8;
   margin-top: 2rem;
 }
 
 .detail-card {
-  background: #fff9e6;
+  background: #faf6ee;
   border-radius: 1.5rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
   padding: 2rem;
   max-width: 900px;
   margin: 0 auto;
@@ -153,7 +205,7 @@ const { isCollected, toggleCollected } = useCollection()
   position: relative;
   width: 180px;
   height: 180px;
-  background: #e8f5e9;
+  background: #e4f2ec;
   border-radius: 1.25rem;
   display: flex;
   align-items: center;
@@ -175,7 +227,7 @@ const { isCollected, toggleCollected } = useCollection()
   position: absolute;
   bottom: 0.4rem;
   right: 0.5rem;
-  background: #4caf50;
+  background: #89E2AE;
   color: #fff;
   font-size: 0.65rem;
   font-weight: 700;
@@ -193,9 +245,9 @@ const { isCollected, toggleCollected } = useCollection()
 }
 
 .detail-name {
-  font-family: 'qlarendon', serif;
+  font-family: 'Manrope', sans-serif;
   font-size: 2rem;
-  color: #2e7d32;
+  color: #6b4428;
   text-transform: capitalize;
   margin: 0;
 }
@@ -207,7 +259,7 @@ const { isCollected, toggleCollected } = useCollection()
 }
 
 .detail-item {
-  background: #f1f8e9;
+  background: #eaf4ef;
   border-radius: 0.75rem;
   padding: 0.6rem 0.9rem;
   display: flex;
@@ -218,7 +270,7 @@ const { isCollected, toggleCollected } = useCollection()
 .detail-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #81c784;
+  color: #9ecfb8;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -226,7 +278,7 @@ const { isCollected, toggleCollected } = useCollection()
 .detail-value {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2e7d32;
+  color: #6b4428;
   text-transform: capitalize;
 }
 
@@ -234,9 +286,9 @@ const { isCollected, toggleCollected } = useCollection()
   align-self: flex-start;
   padding: 0.6rem 1.5rem;
   border-radius: 2rem;
-  border: 2px solid #4caf50;
+  border: 2px solid #89E2AE;
   background: transparent;
-  color: #2e7d32;
+  color: #6b4428;
   font-family: 'Manrope', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
@@ -247,24 +299,28 @@ const { isCollected, toggleCollected } = useCollection()
 
 .collect-btn:hover,
 .collect-btn.collected {
-  background-color: #4caf50;
+  background-color: #89E2AE;
   color: #fff;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #c0e0d0;
+  margin: 0;
 }
 
 .info-block {
   border-radius: 1rem;
   padding: 1.25rem;
-  border-top: 1px solid #c8e6c9;
-  padding-top: 1.5rem;
 }
 
-.info-block.genuine { background: #f1f8e9; }
+.info-block.genuine { background: #eaf4ef; }
 .info-block.forgery { background: #fce4ec; }
 
 .info-title {
   font-family: 'qlarendon', serif;
   font-size: 1.1rem;
-  color: #2e7d32;
+  color: #6b4428;
   margin: 0 0 0.75rem;
 }
 
@@ -288,12 +344,100 @@ const { isCollected, toggleCollected } = useCollection()
 
 .info-description {
   font-size: 0.9rem;
-  color: #33691e;
+  color: #5c3d1e;
   line-height: 1.6;
   margin: 0;
 }
 
 .info-block.forgery .info-description { color: #b71c1c; }
+
+.info-texture.clickable {
+  cursor: zoom-in;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.info-texture.clickable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Lightbox */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.lightbox-box {
+  background: #faf6ee;
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  max-width: 520px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  color: #9ecfb8;
+  line-height: 1;
+}
+
+.lightbox-close:hover { color: #6b4428; }
+
+.lightbox-tabs {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lightbox-tab {
+  padding: 0.35rem 1.1rem;
+  border-radius: 999px;
+  border: 2px solid #89E2AE;
+  background: transparent;
+  color: #6b4428;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.lightbox-tab.active {
+  background: #89E2AE;
+  color: #fff;
+}
+
+.lightbox-img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  border-radius: 1rem;
+  background: #eaf4ef;
+  padding: 1rem;
+}
+
+/* Transitions lightbox */
+.lightbox-enter-active, .lightbox-leave-active { transition: opacity 0.2s; }
+.lightbox-enter-from, .lightbox-leave-to { opacity: 0; }
+
+.slide-enter-active, .slide-leave-active { transition: opacity 0.2s, transform 0.2s; }
+.slide-enter-from { opacity: 0; transform: translateX(30px); }
+.slide-leave-to { opacity: 0; transform: translateX(-30px); }
 
 @media (max-width: 600px) {
   .detail-top { flex-direction: column; }

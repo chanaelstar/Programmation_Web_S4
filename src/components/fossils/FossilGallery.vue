@@ -119,7 +119,7 @@ const sortedFilteredFossils = computed(() => {
 <style scoped>
 .empty-state {
   text-align: center;
-  color: #81c784;
+  color: #9ecfb8;
   margin-top: 2rem;
   font-size: 1rem;
 }
@@ -128,4 +128,5 @@ const sortedFilteredFossils = computed(() => {
   display: block;
   cursor: pointer;
 }
+
 </style>

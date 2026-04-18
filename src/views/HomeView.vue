@@ -42,13 +42,13 @@ function buildChart() {
         {
           label: 'Collected',
           data: collecteds,
-          backgroundColor: '#4caf50',
+          backgroundColor: '#89E2AE',
           borderRadius: 6,
         },
         {
           label: 'Remaining',
           data: totals.map((t, i) => t - collecteds[i]),
-          backgroundColor: '#c8e6c9',
+          backgroundColor: '#c0e0d0',
           borderRadius: 6,
         },
       ],
@@ -136,21 +136,21 @@ watch(collected, buildChart)
 .hero {
   text-align: center;
   padding: 2rem 1rem;
-  background: linear-gradient(135deg, #e8f5e9, #f9fbe7);
+  background: linear-gradient(135deg, #e4f2ec, #f9fbe7);
   border-radius: 1.5rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
 }
 
 .hero-title {
   font-family: 'qlarendon', serif;
-  font-size: 2.5rem;
-  color: #2e7d32;
+  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  color: #6b4428;
   margin-bottom: 0.75rem;
 }
 
 .hero-subtitle {
   font-size: 1.05rem;
-  color: #558b2f;
+  color: #7a5434;
   max-width: 480px;
   margin: 0 auto;
 }
@@ -158,7 +158,7 @@ watch(collected, buildChart)
 .hero-badge {
   display: inline-block;
   margin-top: 1.25rem;
-  background-color: #4caf50;
+  background-color: #89E2AE;
   color: #fff;
   padding: 0.4rem 1.2rem;
   border-radius: 2rem;
@@ -174,15 +174,15 @@ watch(collected, buildChart)
 }
 
 .category-card {
-  width: 200px;
+  width: clamp(140px, 22vw, 200px);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  padding: 2rem 1rem;
+  padding: 1.5rem 1rem;
   background: #fff;
   border-radius: 1.25rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
   text-decoration: none;
   transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
   cursor: pointer;
@@ -191,7 +191,7 @@ watch(collected, buildChart)
 .category-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.2);
-  border-color: #4caf50;
+  border-color: #89E2AE;
 }
 
 .category-icon {
@@ -207,27 +207,27 @@ watch(collected, buildChart)
 .category-label {
   font-family: 'qlarendon', serif;
   font-size: 1.2rem;
-  color: #2e7d32;
+  color: #6b4428;
   font-weight: 700;
 }
 
 .category-count {
   font-size: 0.85rem;
-  color: #81c784;
+  color: #9ecfb8;
   font-weight: 600;
 }
 
 .progress-section {
-  background: #fff9e6;
-  border: 2px solid #c8e6c9;
+  background: #faf6ee;
+  border: 2px solid #c0e0d0;
   border-radius: 1.5rem;
-  padding: 1.75rem 2rem;
+  padding: 1.5rem;
 }
 
 .progress-title {
   font-family: 'qlarendon', serif;
   font-size: 1.4rem;
-  color: #2e7d32;
+  color: #6b4428;
   margin: 0 0 1.25rem;
   text-align: center;
 }
@@ -235,5 +235,24 @@ watch(collected, buildChart)
 .chart-wrapper {
   max-width: 560px;
   margin: 0 auto;
+}
+
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .categories {
+    gap: 0.75rem;
+  }
+
+  .category-label {
+    font-size: 1rem;
+  }
 }
 </style>

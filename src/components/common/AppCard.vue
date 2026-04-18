@@ -55,9 +55,9 @@ const collected = computed(() => isCollected(props.name))
 
 <style scoped>
 .app-card {
-  background: #fff9e6;
+  background: #faf6ee;
   border-radius: 1rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -68,19 +68,19 @@ const collected = computed(() => isCollected(props.name))
 .app-card:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 8px 20px rgba(76, 175, 80, 0.2);
-  border-color: #4caf50;
+  border-color: #89E2AE;
 }
 
 .app-card--collected {
-  border-color: #4caf50;
-  background: #f1f8e9;
+  border-color: #89E2AE;
+  background: #eaf4ef;
 }
 
 .app-card-image-wrapper {
   position: relative;
   width: 100%;
   aspect-ratio: 1;
-  background: #e8f5e9;
+  background: #e4f2ec;
 }
 
 .app-card-image {
@@ -94,7 +94,7 @@ const collected = computed(() => isCollected(props.name))
   position: absolute;
   top: 6px;
   right: 8px;
-  background: #4caf50;
+  background: #89E2AE;
   color: #fff;
   border-radius: 50%;
   width: 22px;
@@ -128,7 +128,7 @@ const collected = computed(() => isCollected(props.name))
   font-size: 0.85rem;
   font-weight: 700;
   text-transform: capitalize;
-  color: #2e7d32;
+  color: #6b4428;
   margin: 0 0 0.2rem;
   white-space: nowrap;
   overflow: hidden;
@@ -137,7 +137,7 @@ const collected = computed(() => isCollected(props.name))
 
 .app-card-line {
   font-size: 0.72rem;
-  color: #558b2f;
+  color: #7a5434;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -159,9 +159,9 @@ const collected = computed(() => isCollected(props.name))
   margin-top: auto;
   padding: 0.3rem 0.6rem;
   border-radius: 1rem;
-  border: 2px solid #4caf50;
+  border: 2px solid #89E2AE;
   background: transparent;
-  color: #2e7d32;
+  color: #6b4428;
   font-family: 'Manrope', sans-serif;
   font-size: 0.72rem;
   font-weight: 700;
@@ -171,12 +171,12 @@ const collected = computed(() => isCollected(props.name))
 }
 
 .collect-btn:hover {
-  background-color: #4caf50;
+  background-color: #89E2AE;
   color: #fff;
 }
 
 .app-card--collected .collect-btn {
-  background-color: #4caf50;
+  background-color: #89E2AE;
   color: #fff;
 }
 </style>

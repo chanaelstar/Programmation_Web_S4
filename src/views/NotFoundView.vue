@@ -19,8 +19,8 @@
 
 .not-found-card {
   text-align: center;
-  background: #fff9e6;
-  border: 2px solid #c8e6c9;
+  background: #faf6ee;
+  border: 2px solid #c0e0d0;
   border-radius: 1.5rem;
   padding: 3rem 4rem;
   display: flex;
@@ -37,23 +37,23 @@
 .not-found-title {
   font-family: 'qlarendon', serif;
   font-size: 4rem;
-  color: #2e7d32;
+  color: #6b4428;
   margin: 0;
 }
 
 .not-found-subtitle {
-  color: #558b2f;
+  color: #7a5434;
   font-size: 1.05rem;
   margin: 0;
 }
 
 .back-link {
   margin-top: 0.5rem;
-  color: #4caf50;
+  color: #89E2AE;
   font-weight: 700;
   text-decoration: none;
   font-size: 0.95rem;
 }
 
-.back-link:hover { color: #2e7d32; }
+.back-link:hover { color: #6b4428; }
 </style>

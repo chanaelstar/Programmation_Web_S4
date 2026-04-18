@@ -70,7 +70,7 @@ const emit = defineEmits(['update:sortKey', 'update:filterKey', 'update:searchQu
   display: flex;
   align-items: center;
   background: #fff;
-  border: 2px solid #a5d6a7;
+  border: 2px solid #b8dcc9;
   border-radius: 2rem;
   padding: 0.35rem 0.9rem;
   gap: 0.5rem;
@@ -80,7 +80,7 @@ const emit = defineEmits(['update:sortKey', 'update:filterKey', 'update:searchQu
 }
 
 .search-bar:focus-within {
-  border-color: #4caf50;
+  border-color: #89E2AE;
 }
 
 .search-icon {
@@ -94,17 +94,17 @@ const emit = defineEmits(['update:sortKey', 'update:filterKey', 'update:searchQu
   background: transparent;
   font-family: 'Manrope', sans-serif;
   font-size: 0.9rem;
-  color: #2e7d32;
+  color: #6b4428;
   outline: none;
   min-width: 0;
 }
 
-.search-input::placeholder { color: #a5d6a7; }
+.search-input::placeholder { color: #b8dcc9; }
 
 .search-clear {
   background: none;
   border: none;
-  color: #a5d6a7;
+  color: #b8dcc9;
   cursor: pointer;
   font-size: 0.8rem;
   padding: 0;
@@ -112,5 +112,16 @@ const emit = defineEmits(['update:sortKey', 'update:filterKey', 'update:searchQu
   flex-shrink: 0;
 }
 
-.search-clear:hover { color: #4caf50; }
+.search-clear:hover { color: #89E2AE; }
+
+@media (max-width: 600px) {
+  .gallery-controls-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+}
 </style>

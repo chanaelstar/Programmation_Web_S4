@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { useCollection } from '@/composables/useCollection.js'
+import AvailabilitySection from '@/components/common/AvailabilitySection.vue'
 
 const props = defineProps({
   creature: Object,
@@ -69,29 +70,7 @@ const { isCollected, toggleCollected } = useCollection()
       </div>
 
       <!-- Bottom: hemisphere availability -->
-      <div class="availability-section">
-        <div class="hemi-block">
-          <h2 class="hemi-title">🌍 Northern hemisphere</h2>
-          <template v-if="creature.availability_north && creature.availability_north.length">
-            <div v-for="(entry, i) in creature.availability_north" :key="i" class="availability-row">
-              <span class="avail-months">{{ entry.months }}</span>
-              <span class="avail-time">{{ entry.time }}</span>
-            </div>
-          </template>
-          <p v-else class="avail-yearround">Year-round</p>
-        </div>
-
-        <div class="hemi-block">
-          <h2 class="hemi-title">🌏 Southern hemisphere</h2>
-          <template v-if="creature.availability_south && creature.availability_south.length">
-            <div v-for="(entry, i) in creature.availability_south" :key="i" class="availability-row">
-              <span class="avail-months">{{ entry.months }}</span>
-              <span class="avail-time">{{ entry.time }}</span>
-            </div>
-          </template>
-          <p v-else class="avail-yearround">Year-round</p>
-        </div>
-      </div>
+      <AvailabilitySection :north="creature.availability_north" :south="creature.availability_south" />
     </div>
   </div>
 </template>
@@ -100,25 +79,25 @@ const { isCollected, toggleCollected } = useCollection()
 .back-link {
   display: inline-block;
   margin-bottom: 1.5rem;
-  color: #4caf50;
+  color: #89E2AE;
   text-decoration: none;
   font-weight: 700;
   font-size: 0.95rem;
   transition: color 0.15s;
 }
 
-.back-link:hover { color: #2e7d32; }
+.back-link:hover { color: #6b4428; }
 
 .error-state {
   text-align: center;
-  color: #81c784;
+  color: #9ecfb8;
   margin-top: 2rem;
 }
 
 .detail-card {
-  background: #fff9e6;
+  background: #faf6ee;
   border-radius: 1.5rem;
-  border: 2px solid #c8e6c9;
+  border: 2px solid #c0e0d0;
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
@@ -136,7 +115,7 @@ const { isCollected, toggleCollected } = useCollection()
   flex-shrink: 0;
   width: 220px;
   height: 220px;
-  background: #e8f5e9;
+  background: #e4f2ec;
   border-radius: 1.25rem;
   display: flex;
   align-items: center;
@@ -158,9 +137,9 @@ const { isCollected, toggleCollected } = useCollection()
 }
 
 .detail-name {
-  font-family: 'qlarendon', serif;
+  font-family: 'Manrope', sans-serif;
   font-size: 2rem;
-  color: #2e7d32;
+  color: #6b4428;
   text-transform: capitalize;
   margin: 0;
 }
@@ -172,7 +151,7 @@ const { isCollected, toggleCollected } = useCollection()
 }
 
 .detail-item {
-  background: #f1f8e9;
+  background: #eaf4ef;
   border-radius: 0.75rem;
   padding: 0.6rem 0.9rem;
   display: flex;
@@ -183,7 +162,7 @@ const { isCollected, toggleCollected } = useCollection()
 .detail-label {
   font-size: 0.72rem;
   font-weight: 700;
-  color: #81c784;
+  color: #9ecfb8;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -191,7 +170,7 @@ const { isCollected, toggleCollected } = useCollection()
 .detail-value {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #2e7d32;
+  color: #6b4428;
   text-transform: capitalize;
 }
 
@@ -199,7 +178,7 @@ const { isCollected, toggleCollected } = useCollection()
 
 .catchphrase {
   font-style: italic;
-  color: #81c784;
+  color: #9ecfb8;
   font-size: 0.9rem;
   margin: 0;
 }
@@ -208,9 +187,9 @@ const { isCollected, toggleCollected } = useCollection()
   align-self: flex-start;
   padding: 0.6rem 1.5rem;
   border-radius: 2rem;
-  border: 2px solid #4caf50;
+  border: 2px solid #89E2AE;
   background: transparent;
-  color: #2e7d32;
+  color: #6b4428;
   font-family: 'Manrope', sans-serif;
   font-size: 0.95rem;
   font-weight: 700;
@@ -221,64 +200,15 @@ const { isCollected, toggleCollected } = useCollection()
 
 .collect-btn:hover,
 .collect-btn.collected {
-  background-color: #4caf50;
+  background-color: #89E2AE;
   color: #fff;
 }
 
-/* Availability */
-.availability-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  border-top: 1px solid #c8e6c9;
-  padding-top: 1.5rem;
-}
-
-.hemi-block {
-  background: #f1f8e9;
-  border-radius: 1rem;
-  padding: 1rem 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.hemi-title {
-  font-family: 'qlarendon', serif;
-  font-size: 1rem;
-  color: #2e7d32;
-  margin: 0 0 0.25rem;
-}
-
-.availability-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.85rem;
-}
-
-.avail-months {
-  font-weight: 700;
-  color: #2e7d32;
-}
-
-.avail-time {
-  color: #558b2f;
-  font-weight: 500;
-}
-
-.avail-yearround {
-  font-size: 0.85rem;
-  color: #558b2f;
-  font-style: italic;
-  margin: 0;
-}
-
 @media (max-width: 600px) {
-  .detail-top { flex-direction: column; }
+  .detail-card { padding: 1.25rem; gap: 1.25rem; }
+  .detail-top { flex-direction: column; gap: 1.25rem; }
   .detail-image-wrapper { width: 100%; height: 200px; }
+  .detail-name { font-size: 1.5rem; }
   .detail-grid { grid-template-columns: 1fr; }
-  .availability-section { grid-template-columns: 1fr; }
 }
 </style>

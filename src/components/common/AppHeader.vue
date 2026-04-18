@@ -44,7 +44,7 @@ const navLinks = [
 
 <style scoped>
 .app-header {
-  background-color: #4caf50;
+  background-color: #79cdd4;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   position: sticky;
   top: 0;
@@ -134,7 +134,7 @@ const navLinks = [
     top: 64px;
     left: 0;
     right: 0;
-    background-color: #43a047;
+    background-color: #5bbec8;
     flex-direction: column;
     padding: 0.75rem 1rem;
     gap: 0.25rem;

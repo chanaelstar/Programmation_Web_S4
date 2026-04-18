@@ -13,8 +13,8 @@
 
 <style scoped>
 .app-footer {
-  background-color: #388e3c;
-  color: #c8e6c9;
+  background-color: #79cdd4;
+  color: #fff;
   margin-top: auto;
 }
 
@@ -37,7 +37,7 @@
 }
 
 .footer-credits a {
-  color: #a5d6a7;
+  color: rgba(255,255,255,0.85);
   text-decoration: underline;
 }
 

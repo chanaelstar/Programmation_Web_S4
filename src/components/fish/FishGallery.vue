@@ -124,7 +124,7 @@ const sortedFilteredItems = computed(() => {
 <style scoped>
 .empty-state {
   text-align: center;
-  color: #81c784;
+  color: #9ecfb8;
   margin-top: 2rem;
   font-size: 1rem;
 }
@@ -148,10 +148,10 @@ const sortedFilteredItems = computed(() => {
 
 .tab-btn {
   padding: 0.35rem 0.9rem;
-  border: 2px solid #2e7d32;
+  border: 2px solid #6b4428;
   border-radius: 999px;
   background: transparent;
-  color: #2e7d32;
+  color: #6b4428;
   font-family: inherit;
   font-size: 0.9rem;
   cursor: pointer;
@@ -159,11 +159,24 @@ const sortedFilteredItems = computed(() => {
 }
 
 .tab-btn.active {
-  background: #2e7d32;
+  background: #6b4428;
   color: #fff;
 }
 
 .tab-btn:not(.active):hover {
-  background: #e8f5e9;
+  background: #e4f2ec;
 }
+
+@media (max-width: 480px) {
+  .gallery-title-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tab-btn {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.7rem;
+  }
+}
+
 </style>

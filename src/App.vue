@@ -61,8 +61,8 @@ html, body {
 
 body {
   font-family: 'Manrope', sans-serif;
-  background-color: #f1f8e9;
-  color: #33691e;
+  background-color: #f5efe3;
+  color: #5c3d1e;
   line-height: 1.5;
 }
 
@@ -130,7 +130,7 @@ body {
 .gallery-title {
   font-family: 'qlarendon', serif;
   font-size: 1.8rem;
-  color: #2e7d32;
+  color: #6b4428;
 }
 
 .gallery-controls {
@@ -148,9 +148,9 @@ body {
 .gallery-controls select {
   padding: 0.35rem 0.75rem;
   border-radius: 1rem;
-  border: 2px solid #a5d6a7;
+  border: 2px solid #b8dcc9;
   background: #fff;
-  color: #33691e;
+  color: #5c3d1e;
   font-family: 'Manrope', sans-serif;
   font-size: 0.9rem;
   cursor: pointer;
@@ -158,7 +158,7 @@ body {
 }
 
 .gallery-controls select:focus {
-  border-color: #4caf50;
+  border-color: #89E2AE;
 }
 
 .gallery-grid {
@@ -178,8 +178,8 @@ body {
 .spinner {
   width: 48px;
   height: 48px;
-  border: 5px solid #c8e6c9;
-  border-top-color: #4caf50;
+  border: 5px solid #c0e0d0;
+  border-top-color: #79cdd4;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -188,9 +188,19 @@ body {
   to { transform: rotate(360deg); }
 }
 
+@media (max-width: 768px) {
+  .gallery-title {
+    font-size: 1.4rem;
+  }
+}
+
 @media (max-width: 480px) {
   .app-main {
-    padding: 1.25rem 1rem;
+    padding: 1rem 0.75rem;
+  }
+
+  .gallery-title {
+    font-size: 1.25rem;
   }
 
   .gallery-grid {
