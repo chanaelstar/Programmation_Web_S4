@@ -52,7 +52,7 @@ const sortedFilteredFossils = computed(() => {
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
-    list = list.filter(f => f.name.toLowerCase().includes(q))
+    list = list.filter(f => f.name.toLowerCase().startsWith(q))
   }
 
   if (filterKey.value === 'collected') {

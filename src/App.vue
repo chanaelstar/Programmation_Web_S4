@@ -121,10 +121,9 @@ body {
 /* Shared gallery styles */
 .gallery-header {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
   margin-bottom: 1.5rem;
 }
 

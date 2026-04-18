@@ -36,7 +36,7 @@ const sortedFilteredArtworks = computed(() => {
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
-    list = list.filter(a => a.name.toLowerCase().includes(q))
+    list = list.filter(a => a.name.toLowerCase().startsWith(q))
   }
 
   if (filterKey.value === 'collected') {

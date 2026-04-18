@@ -13,65 +13,104 @@ const emit = defineEmits(['update:sortKey', 'update:filterKey', 'update:searchQu
 
 <template>
   <div class="gallery-controls-wrapper">
-  <input
-    class="search-input"
-    type="text"
-    :placeholder="searchPlaceholder"
-    :value="searchQuery"
-    @input="emit('update:searchQuery', $event.target.value)"
-  />
-  <div class="gallery-controls">
-    <label :for="sortId">Sort</label>
-    <select
-      :id="sortId"
-      :value="sortKey"
-      @change="emit('update:sortKey', $event.target.value)"
-    >
-      <option value="name-asc">Name A → Z</option>
-      <option value="name-desc">Name Z → A</option>
-      <option value="price-asc">Price ↑</option>
-      <option value="price-desc">Price ↓</option>
-    </select>
+    <div class="search-bar">
+      <span class="search-icon">🔍</span>
+      <input
+        class="search-input"
+        type="text"
+        :placeholder="searchPlaceholder"
+        :value="searchQuery"
+        @input="emit('update:searchQuery', $event.target.value)"
+      />
+      <button
+        v-if="searchQuery"
+        class="search-clear"
+        @click="emit('update:searchQuery', '')"
+      >✕</button>
+    </div>
 
-    <label :for="filterId">Filter</label>
-    <select
-      :id="filterId"
-      :value="filterKey"
-      @change="emit('update:filterKey', $event.target.value)"
-    >
-      <option value="all">All</option>
-      <option value="collected">Collected</option>
-      <option value="not-collected">Not collected</option>
-    </select>
-  </div>
+    <div class="gallery-controls">
+      <label :for="sortId">Sort</label>
+      <select
+        :id="sortId"
+        :value="sortKey"
+        @change="emit('update:sortKey', $event.target.value)"
+      >
+        <option value="name-asc">Name A → Z</option>
+        <option value="name-desc">Name Z → A</option>
+        <option value="price-asc">Price ↑</option>
+        <option value="price-desc">Price ↓</option>
+      </select>
+
+      <label :for="filterId">Filter</label>
+      <select
+        :id="filterId"
+        :value="filterKey"
+        @change="emit('update:filterKey', $event.target.value)"
+      >
+        <option value="all">All</option>
+        <option value="collected">Collected</option>
+        <option value="not-collected">Not collected</option>
+      </select>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .gallery-controls-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 2px solid #a5d6a7;
+  border-radius: 2rem;
+  padding: 0.35rem 0.9rem;
+  gap: 0.5rem;
+  width: 320px;
+  max-width: 100%;
+  transition: border-color 0.15s;
+}
+
+.search-bar:focus-within {
+  border-color: #4caf50;
+}
+
+.search-icon {
+  font-size: 0.9rem;
+  flex-shrink: 0;
 }
 
 .search-input {
-  padding: 0.4rem 0.9rem;
-  border-radius: 1rem;
-  border: 2px solid #a5d6a7;
-  background: #fff;
+  flex: 1;
+  border: none;
+  background: transparent;
   font-family: 'Manrope', sans-serif;
   font-size: 0.9rem;
   color: #2e7d32;
   outline: none;
-  width: 220px;
-  transition: border-color 0.15s;
+  min-width: 0;
 }
 
-.search-input:focus {
-  border-color: #4caf50;
-}
+.search-input::placeholder { color: #a5d6a7; }
 
-.search-input::placeholder {
+.search-clear {
+  background: none;
+  border: none;
   color: #a5d6a7;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
 }
+
+.search-clear:hover { color: #4caf50; }
 </style>

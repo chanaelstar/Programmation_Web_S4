@@ -36,7 +36,7 @@ const sortedFilteredBugs = computed(() => {
 
   if (searchQuery.value) {
     const q = searchQuery.value.toLowerCase()
-    list = list.filter(b => b.name.toLowerCase().includes(q))
+    list = list.filter(b => b.name.toLowerCase().startsWith(q))
   }
 
   if (filterKey.value === 'collected') {
@@ -48,8 +48,8 @@ const sortedFilteredBugs = computed(() => {
   list.sort((a, b) => {
     if (sortKey.value === 'name-asc') return a.name.localeCompare(b.name)
     if (sortKey.value === 'name-desc') return b.name.localeCompare(a.name)
-    if (sortKey.value === 'price-asc') return (a.sell || 0) - (b.sell || 0)
-    if (sortKey.value === 'price-desc') return (b.sell || 0) - (a.sell || 0)
+    if (sortKey.value === 'price-asc') return (a.sell_nook || 0) - (b.sell_nook || 0)
+    if (sortKey.value === 'price-desc') return (b.sell_nook || 0) - (a.sell_nook || 0)
     return 0
   })
 
