@@ -30,6 +30,27 @@ export async function fetchAllFossils(){
         return [];
 }
 }
+// Single fossil
+export async function fetchSingleFossil(fossil){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/fossils/individuals/${encodeURIComponent(fossil)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            return data
+        }else {
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single fossil:', error)
+        return [];
+    }
+}
 
 // List of artworks
 export async function fetchAllArtworks(){
@@ -53,6 +74,28 @@ export async function fetchAllArtworks(){
         return [];
 }
 }
+// Single artwork
+export async function fetchSingleArtwork(artwork){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/art/${encodeURIComponent(artwork)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            return data
+        }else {
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single artwork:', error)
+        return [];
+    }
+}
+
 
 // List of bugs
 export async function fetchAllBugs(){
@@ -144,6 +187,7 @@ export async function fetchSingleFish(fish){
     }
 }
 
+
 // List of sea creatures
 export async function fetchAllSeaCreatures(){
     try {
@@ -165,4 +209,26 @@ export async function fetchAllSeaCreatures(){
         console.error('Error fetching sea creatures:', error)
         return [];
 }
+}
+
+// Single sea creature
+export async function fetchSingleSeaCreature(seaCreature){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/sea/${encodeURIComponent(seaCreature)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            return data
+        }else {
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single sea creature:', error)
+        return [];
+    }
 }

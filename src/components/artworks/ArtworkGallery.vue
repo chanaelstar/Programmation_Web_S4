@@ -1,8 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { fetchAllArtworks } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+
+const router = useRouter()
+
+function goToDetail(name) {
+  router.push(`/artworks/${name}`)
+}
 
 const artworks = ref([])
 const loading = ref(true)
@@ -67,15 +74,20 @@ const sortedFilteredArtworks = computed(() => {
     </div>
 
     <TransitionGroup v-else name="card" tag="div" class="gallery-grid">
-      <AppCard
+      <div
         v-for="art in sortedFilteredArtworks"
         :key="art.name"
-        :name="art.name"
-        :image_url="art.image_url"
-        :art_name="art.art_name"
-        :art_type="art.art_type"
-        :has_fake="art.has_fake"
-      />
+        class="card-link"
+        @click="goToDetail(art.name)"
+      >
+        <AppCard
+          :name="art.name"
+          :image_url="art.image_url"
+          :art_name="art.art_name"
+          :art_type="art.art_type"
+          :has_fake="art.has_fake"
+        />
+      </div>
     </TransitionGroup>
 
     <p v-if="!loading && sortedFilteredArtworks.length === 0" class="empty-state">
@@ -90,5 +102,10 @@ const sortedFilteredArtworks = computed(() => {
   color: #81c784;
   margin-top: 2rem;
   font-size: 1rem;
+}
+
+.card-link {
+  display: block;
+  cursor: pointer;
 }
 </style>

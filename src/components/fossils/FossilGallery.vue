@@ -1,8 +1,15 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { fetchAllFossils } from '@/services/api.js'
 import { useCollection } from '@/composables/useCollection.js'
 import AppCard from '@/components/common/AppCard.vue'
+
+const router = useRouter()
+
+function goToDetail(name) {
+  router.push(`/fossils/${name}`)
+}
 
 const fossils = ref([])
 const loading = ref(true)
@@ -67,13 +74,18 @@ const sortedFilteredFossils = computed(() => {
     </div>
 
     <TransitionGroup v-else name="card" tag="div" class="gallery-grid">
-      <AppCard
+      <div
         v-for="fossil in sortedFilteredFossils"
         :key="fossil.name"
-        :name="fossil.name"
-        :image_url="fossil.image_url"
-        :fossil_group="fossil.fossil_group"
-      />
+        class="card-link"
+        @click="goToDetail(fossil.name)"
+      >
+        <AppCard
+          :name="fossil.name"
+          :image_url="fossil.image_url"
+          :fossil_group="fossil.fossil_group"
+        />
+      </div>
     </TransitionGroup>
 
     <p v-if="!loading && sortedFilteredFossils.length === 0" class="empty-state">
@@ -88,5 +100,10 @@ const sortedFilteredFossils = computed(() => {
   color: #81c784;
   margin-top: 2rem;
   font-size: 1rem;
+}
+
+.card-link {
+  display: block;
+  cursor: pointer;
 }
 </style>

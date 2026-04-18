@@ -64,12 +64,12 @@ const sortedFilteredItems = computed(() => {
             class="tab-btn"
             :class="{ active: activeTab === 'fish' }"
             @click="activeTab = 'fish'"
-          >Poissons</button>
+          >Fish</button>
           <button
             class="tab-btn"
             :class="{ active: activeTab === 'sea' }"
             @click="activeTab = 'sea'"
-          >Créatures marines</button>
+          >Sea Creatures</button>
         </div>
       </div>
       <div class="gallery-controls">
@@ -99,7 +99,7 @@ const sortedFilteredItems = computed(() => {
         v-for="item in sortedFilteredItems"
         :key="item.name"
         class="card-link"
-        @click="activeTab === 'fish' ? goToDetail(item.name) : null"
+        @click="activeTab === 'fish' ? goToDetail(item.name) : router.push(`/sea/${item.name}`)"
       >
         <AppCard
           :name="item.name"
