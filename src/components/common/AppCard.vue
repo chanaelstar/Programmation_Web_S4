@@ -43,9 +43,6 @@ const collected = computed(() => isCollected(props.name))
       <p v-if="art_type" class="app-card-line">
         <strong>Type:</strong> {{ art_type }}
       </p>
-      <!-- <p v-if="rarity" class="app-card-line">
-        <strong>Rarity:</strong> {{ rarity }}
-      </p> -->
       <span v-if="has_fake" class="fake-badge">Has fake</span>
 
       <button class="collect-btn" @click.stop="toggleCollected(name)">

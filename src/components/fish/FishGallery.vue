@@ -104,6 +104,7 @@ const sortedFilteredItems = computed(() => {
         <AppCard
           :name="item.name"
           :image_url="item.image_url"
+          :rarity="item.rarity"
         />
       </div>
     </div>

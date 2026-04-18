@@ -119,7 +119,7 @@ export async function fetchAllBugs(){
         return [];
 }
 }
-// Single bug : information about a specific bug 
+// Single bug : information about a specific bug
 export async function fetchSingleBug(bug){
     try {
         const response = await fetch(`https://api.nookipedia.com/nh/bugs/${encodeURIComponent(bug)}`, {
@@ -133,7 +133,7 @@ export async function fetchSingleBug(bug){
             const data = await response.json()
             console.log("Recovered single bug:", data)
             return data
-        }else {           
+        }else {
              throw new Error (response.statusText)
         }
     } catch (error) {

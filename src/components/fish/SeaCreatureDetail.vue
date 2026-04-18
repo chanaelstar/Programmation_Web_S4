@@ -21,48 +21,76 @@ const { isCollected, toggleCollected } = useCollection()
 
     <p v-else-if="error" class="error-state">Sea creature not found.</p>
 
-    <div v-else class="detail">
-      <div class="detail-image-wrapper">
-        <img :src="creature.image_url" :alt="creature.name" class="detail-image" />
+    <div v-else class="detail-card">
+      <!-- Top: image + info -->
+      <div class="detail-top">
+        <div class="detail-image-wrapper">
+          <img
+            :src="creature.render_url || creature.image_url"
+            :alt="creature.name"
+            class="detail-image"
+          />
+        </div>
+
+        <div class="detail-info">
+          <h1 class="detail-name">{{ creature.name }}</h1>
+
+          <div class="detail-grid">
+            <div v-if="creature.rarity" class="detail-item">
+              <span class="detail-label">Rarity</span>
+              <span class="detail-value">{{ creature.rarity }}</span>
+            </div>
+            <div v-if="creature.sell_nook" class="detail-item">
+              <span class="detail-label">Sell (Nook)</span>
+              <span class="detail-value">{{ creature.sell_nook }} bells</span>
+            </div>
+            <div v-if="creature.shadow_size" class="detail-item">
+              <span class="detail-label">Shadow size</span>
+              <span class="detail-value">{{ creature.shadow_size }}</span>
+            </div>
+            <div v-if="creature.shadow_movement" class="detail-item">
+              <span class="detail-label">Shadow movement</span>
+              <span class="detail-value">{{ creature.shadow_movement }}</span>
+            </div>
+          </div>
+
+          <div v-if="creature.catchphrases && creature.catchphrases.length" class="catchphrase-block">
+            <p class="catchphrase">« {{ creature.catchphrases[0] }} »</p>
+          </div>
+
+          <button
+            class="collect-btn"
+            :class="{ collected: isCollected(creature.name) }"
+            @click="toggleCollected(creature.name)"
+          >
+            {{ isCollected(creature.name) ? '✓ Collected' : '+ Add to collection' }}
+          </button>
+        </div>
       </div>
 
-      <div class="detail-info">
-        <h1 class="detail-name">{{ creature.name }}</h1>
-
-        <div class="detail-grid">
-          <div v-if="creature.rarity" class="detail-item">
-            <span class="detail-label">Rarity</span>
-            <span class="detail-value">{{ creature.rarity }}</span>
-          </div>
-          <div v-if="creature.sell_nook" class="detail-item">
-            <span class="detail-label">Sell (Nook)</span>
-            <span class="detail-value">{{ creature.sell_nook }} bells</span>
-          </div>
-          <div v-if="creature.shadow_size" class="detail-item">
-            <span class="detail-label">Shadow size</span>
-            <span class="detail-value">{{ creature.shadow_size }}</span>
-          </div>
-          <div v-if="creature.shadow_movement" class="detail-item">
-            <span class="detail-label">Shadow movement</span>
-            <span class="detail-value">{{ creature.shadow_movement }}</span>
-          </div>
-          <div v-if="creature.speed" class="detail-item">
-            <span class="detail-label">Speed</span>
-            <span class="detail-value">{{ creature.speed }}</span>
-          </div>
+      <!-- Bottom: hemisphere availability -->
+      <div class="availability-section">
+        <div class="hemi-block">
+          <h2 class="hemi-title">🌍 Northern hemisphere</h2>
+          <template v-if="creature.availability_north && creature.availability_north.length">
+            <div v-for="(entry, i) in creature.availability_north" :key="i" class="availability-row">
+              <span class="avail-months">{{ entry.months }}</span>
+              <span class="avail-time">{{ entry.time }}</span>
+            </div>
+          </template>
+          <p v-else class="avail-yearround">Year-round</p>
         </div>
 
-        <div v-if="creature.catchphrases && creature.catchphrases.length" class="detail-catchphrase">
-          <p class="catchphrase">« {{ creature.catchphrases[0] }} »</p>
+        <div class="hemi-block">
+          <h2 class="hemi-title">🌏 Southern hemisphere</h2>
+          <template v-if="creature.availability_south && creature.availability_south.length">
+            <div v-for="(entry, i) in creature.availability_south" :key="i" class="availability-row">
+              <span class="avail-months">{{ entry.months }}</span>
+              <span class="avail-time">{{ entry.time }}</span>
+            </div>
+          </template>
+          <p v-else class="avail-yearround">Year-round</p>
         </div>
-
-        <button
-          class="collect-btn"
-          :class="{ collected: isCollected(creature.name) }"
-          @click="toggleCollected(creature.name)"
-        >
-          {{ isCollected(creature.name) ? '✓ Collected' : '+ Add to collection' }}
-        </button>
       </div>
     </div>
   </div>
@@ -87,15 +115,21 @@ const { isCollected, toggleCollected } = useCollection()
   margin-top: 2rem;
 }
 
-.detail {
-  display: flex;
-  gap: 2.5rem;
+.detail-card {
   background: #fff9e6;
   border-radius: 1.5rem;
   border: 2px solid #c8e6c9;
   padding: 2rem;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.detail-top {
+  display: flex;
+  gap: 2.5rem;
 }
 
 .detail-image-wrapper {
@@ -161,6 +195,8 @@ const { isCollected, toggleCollected } = useCollection()
   text-transform: capitalize;
 }
 
+.catchphrase-block { margin: 0; }
+
 .catchphrase {
   font-style: italic;
   color: #81c784;
@@ -189,9 +225,60 @@ const { isCollected, toggleCollected } = useCollection()
   color: #fff;
 }
 
+/* Availability */
+.availability-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  border-top: 1px solid #c8e6c9;
+  padding-top: 1.5rem;
+}
+
+.hemi-block {
+  background: #f1f8e9;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.hemi-title {
+  font-family: 'qlarendon', serif;
+  font-size: 1rem;
+  color: #2e7d32;
+  margin: 0 0 0.25rem;
+}
+
+.availability-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.avail-months {
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.avail-time {
+  color: #558b2f;
+  font-weight: 500;
+}
+
+.avail-yearround {
+  font-size: 0.85rem;
+  color: #558b2f;
+  font-style: italic;
+  margin: 0;
+}
+
 @media (max-width: 600px) {
-  .detail { flex-direction: column; }
+  .detail-top { flex-direction: column; }
   .detail-image-wrapper { width: 100%; height: 200px; }
   .detail-grid { grid-template-columns: 1fr; }
+  .availability-section { grid-template-columns: 1fr; }
 }
 </style>
