@@ -15,8 +15,6 @@ const props = defineProps({
   year: String,
   art_style: String,
   has_fake: Boolean,
-  // Bug/fish-specific
-  rarity: String
 })
 
 const { isCollected, toggleCollected } = useCollection()

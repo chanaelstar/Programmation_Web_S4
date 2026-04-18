@@ -1,8 +1,3 @@
-// function fetchFossils() {
-//     console.log("Fetching fossils data...");
-// }
-// export { fetchFossils };
-
 // On appelle la clé une seule fois 
 // On récupère la clé depuis les variables d'environnement
 const apiKey = import.meta.env.VITE_NOOKIPEDIA_API_KEY;
@@ -30,10 +25,34 @@ export async function fetchAllFossils(){
         return [];
 }
 }
-// Single fossil
-export async function fetchSingleFossil(fossil){
+// Single individual fossil (no group info)
+export async function fetchSingleFossilIndividual(fossil){
     try {
         const response = await fetch(`https://api.nookipedia.com/nh/fossils/individuals/${encodeURIComponent(fossil)}`, {
+            method: 'GET',
+            headers : {
+                'X-API-KEY': apiKey,
+                'Accept-Version': '1.0.0',
+            }
+        });
+        if (response.status == 200){
+            const data = await response.json()
+            return data
+        }else {
+             throw new Error (response.statusText)
+        }
+    } catch (error) {
+        console.error('Error fetching single fossil individual:', error)
+        return null;
+    }
+}
+
+
+// Single New Horizons fossil group with individual fossils
+// Retrieve information about a specific fossil group with their respective individual fossils in Animal Crossing: New Horizons.
+export async function fetchSingleFossil(fossil){
+    try {
+        const response = await fetch(`https://api.nookipedia.com/nh/fossils/all/${encodeURIComponent(fossil)}`, {
             method: 'GET',
             headers : {
                 'X-API-KEY': apiKey,
@@ -51,6 +70,8 @@ export async function fetchSingleFossil(fossil){
         return [];
     }
 }
+
+
 
 // List of artworks
 export async function fetchAllArtworks(){
@@ -210,7 +231,6 @@ export async function fetchAllSeaCreatures(){
         return [];
 }
 }
-
 // Single sea creature
 export async function fetchSingleSeaCreature(seaCreature){
     try {
